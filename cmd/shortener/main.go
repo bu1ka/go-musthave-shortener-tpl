@@ -18,7 +18,7 @@ import (
 Нужно учесть некорректные запросы и возвращать для них ответ с кодом 400.
  */
 
-var addr = "http://localhost:8080"
+var addr = "localhost:8080"
 
 type Dict struct {
 	elems [][]byte
@@ -27,7 +27,7 @@ type Dict struct {
 func (d *Dict) set(full []byte) string {
 	d.elems = append(d.elems, full)
 
-	return addr + "/" + strconv.Itoa(len(d.elems) - 1)
+	return "http://" + addr + "/" + strconv.Itoa(len(d.elems) - 1)
 }
 
 func (d *Dict) get(id int) ([]byte, error) {
