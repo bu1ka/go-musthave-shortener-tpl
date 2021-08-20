@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func getId(s string) (int, error){
+func getID(s string) (int, error){
 	id := strings.Split(s, "/")[1]
 
 	fmt.Println("parsed id", id)

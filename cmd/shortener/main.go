@@ -18,7 +18,7 @@ import (
 Нужно учесть некорректные запросы и возвращать для них ответ с кодом 400.
  */
 
-var addr = "localhost:8080"
+var addr = "http://localhost:8080"
 
 type Dict struct {
 	elems [][]byte
@@ -62,6 +62,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 
 		short := dict.set(url)
 
+		w.WriteHeader(http.StatusCreated)
 		_, err = w.Write([]byte(short))
 
 		if err != nil {
@@ -72,7 +73,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodGet {
-		id, err := getId(r.URL.Path)
+		id, err := getID(r.URL.Path)
 
 		if err != nil {
 			http.Error(w, "Not Found", http.StatusNotFound)
@@ -88,7 +89,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.Redirect(w, r, string(el), 307)
+		http.Redirect(w, r, string(el), http.StatusTemporaryRedirect)
 	}
 
 
