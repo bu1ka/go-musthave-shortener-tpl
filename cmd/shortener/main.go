@@ -18,14 +18,16 @@ import (
 Нужно учесть некорректные запросы и возвращать для них ответ с кодом 400.
  */
 
+var addr = "localhost:8080"
+
 type Dict struct {
 	elems [][]byte
 }
 
-func (d *Dict) set(full []byte) int {
+func (d *Dict) set(full []byte) string {
 	d.elems = append(d.elems, full)
 
-	return len(d.elems) - 1
+	return addr + "/" + strconv.Itoa(len(d.elems) - 1)
 }
 
 func (d *Dict) get(id int) ([]byte, error) {
@@ -58,9 +60,9 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		id := dict.set(url)
+		short := dict.set(url)
 
-		_, err = w.Write([]byte(strconv.Itoa(id)))
+		_, err = w.Write([]byte(short))
 
 		if err != nil {
 			http.Error(w, "bad request", http.StatusBadRequest)
@@ -97,7 +99,7 @@ func main() {
 
 	router.Handle("/", http.HandlerFunc(RootHandler))
 
-	err := http.ListenAndServe(":8080", router)
+	err := http.ListenAndServe(addr, router)
 
 	if err != nil {
 		panic("server not started")
