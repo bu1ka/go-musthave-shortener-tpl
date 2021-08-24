@@ -48,8 +48,6 @@ func RootPostHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "bad request", http.StatusBadRequest)
 	}
-
-	return
 }
 
 
